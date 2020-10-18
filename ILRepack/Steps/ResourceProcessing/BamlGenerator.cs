@@ -127,7 +127,7 @@ namespace ILRepacking.Steps.ResourceProcessing
 
         private void AddAssemblyInfos(BamlDocument document)
         {
-            var assemblyNames = new[] { "WindowsBase", "PresentationCore", "PresentationFramework" };
+            var assemblyNames = new[] { "WindowsBase", "PresentationCore", "PresentationFramework", "System.Windows.Controls.Ribbon" };
             var references = _targetAssemblyReferences.
                 Where(asm => assemblyNames.Any(prefix => asm.Name.Equals(prefix)));
 

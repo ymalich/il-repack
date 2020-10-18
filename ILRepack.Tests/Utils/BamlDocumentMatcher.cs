@@ -23,7 +23,7 @@ namespace ILRepack.Tests.Utils
 
         private readonly Dictionary<Type, List<string>> _propertiesToCheck = new Dictionary<Type, List<string>>
         {
-            { typeof(AssemblyInfoRecord), new List<string> { "AssemblyFullName", "AssemblyId" } },
+            { typeof(AssemblyInfoRecord), new List<string> { "AssemblyFullName" } },
             { typeof(AttributeInfoRecord), new List<string> { "AttributeId", "Name", "AttributeUsage", "OwnerTypeId" } },
             { typeof(ElementStartRecord), new List<string> { "Flags", "TypeId" } },
             { typeof(XmlnsPropertyRecord), new List<string> { "Prefix", "XmlNamespace", "AssemblyIds" } },
@@ -40,7 +40,7 @@ namespace ILRepack.Tests.Utils
             _expectedDocument = expectedDocument;
         }
 
-        public override bool Matches(object actual)
+        public bool ApplyTo(object actual)
         {
             var bamlDocument = (BamlDocument)actual;
 
@@ -57,9 +57,11 @@ namespace ILRepack.Tests.Utils
                 return false;
             }
 
-            return AreRecordsEquivalent(
+            var res = AreRecordsEquivalent(
                 GetRelevantRecords(_expectedDocument),
                 GetRelevantRecords(bamlDocument));
+
+            return res;
         }
 
         private bool HaveSameVersion(
@@ -93,8 +95,9 @@ namespace ILRepack.Tests.Utils
                 return false;
             }
 
-            return expectedRecords.Zip(actualRecords, Tuple.Create).All(
-                tuple => AreEquivalent(tuple.Item1, tuple.Item2));
+            var except1 = expectedRecords.Where(x => !actualRecords.Any(x2 => AreEquivalent(x, x2))).ToList();
+
+            return except1.Count == 0;
         }
 
         private bool AreEquivalent(BamlRecord expectedRecord, BamlRecord actualRecord)
@@ -156,17 +159,23 @@ namespace ILRepack.Tests.Utils
             return document.Where(node => !(node is LineNumberAndPositionRecord || node is LinePositionRecord)).ToList();
         }
 
-        public override void WriteActualValueTo(MessageWriter writer)
+        public void WriteActualValueTo(MessageWriter writer)
         {
             writer.WriteActualValue(_actualValue);
         }
 
-        public override void WriteDescriptionTo(MessageWriter writer)
+        public void WriteDescriptionTo(MessageWriter writer)
         {
-            writer.WriteExpectedValue(_expectedValue);
+            writer.WriteValue(_expectedValue);
 
             if (_context != null)
                 writer.WriteMessageLine("In " + _context);
+        }
+
+        public override ConstraintResult ApplyTo<TActual>(TActual actual)
+        {
+            var res = ApplyTo(actual);
+            return new ConstraintResult(this, actual, res);
         }
     }
 }

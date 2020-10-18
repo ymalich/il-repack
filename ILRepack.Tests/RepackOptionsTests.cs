@@ -1,4 +1,5 @@
 ﻿using ILRepacking;
+
 using Moq;
 using NUnit.Framework;
 using System;
@@ -160,7 +161,7 @@ namespace ILRepack.Tests
         {
             commandLine.Setup(cmd => cmd.Option("target")).Returns("exe");
             Parse();
-            Assert.AreEqual(ILRepacking.ILRepack.Kind.Exe, options.TargetKind);
+            NUnit.Framework.Assert.AreEqual(ILRepacking.ILRepack.Kind.Exe, options.TargetKind);
         }
 
         [Test]
@@ -172,11 +173,19 @@ namespace ILRepack.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(RepackOptions.InvalidTargetKindException))]
+        ////[ExpectedException(typeof(RepackOptions.InvalidTargetKindException))]
         public void WithOptionTargetKindInvalid__Parse__TargetKindIsSet()
         {
-            commandLine.Setup(cmd => cmd.Option("target")).Returns("notsupportedtype");
-            Parse();
+            try
+            {
+                commandLine.Setup(cmd => cmd.Option("target")).Returns("notsupportedtype");
+                Parse();
+                Assert.Fail(); // should throw InvalidTargetKindException
+            }
+            catch(RepackOptions.InvalidTargetKindException)
+            {
+                // ok
+            }
         }
 
         [Test]
@@ -256,37 +265,70 @@ namespace ILRepack.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException), ExpectedMessage = "No input files given.")]
+        ////[ExpectedException(typeof(ArgumentException), ExpectedMessage = "No input files given.")]
         public void WithNoInputAssemblies__ParseProperties__ThrowException()
         {
-            commandLine.Setup(cmd => cmd.Option("out")).Returns("filename");
-            Parse();
-            options.Validate();
+            try
+            {
+                commandLine.Setup(cmd => cmd.Option("out")).Returns("filename");
+                Parse();
+                options.Validate();
+                Assert.Fail(); // should throw ArgumentException("No input files given.")
+            }
+            catch(ArgumentException ex)
+            {
+                if (ex.Message != "No input files given.")
+                {
+                    Assert.Fail(); // should throw ArgumentException("No input files given.")
+                }
+            }
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException), ExpectedMessage = "KeyFile does not exist", MatchType = MessageMatch.Contains)]
+        ////[ExpectedException(typeof(ArgumentException), ExpectedMessage =KeyFile does not exist", MatchType = MessageMatch.Contains)]
         public void WithNoKeyFile__ParseProperties__ThrowException()
         {
-            var inputAssemblies = new List<string> { "A", "B", "C" };
-            commandLine.Setup(cmd => cmd.Option("out")).Returns("filename");
-            commandLine.Setup(cmd => cmd.OtherAguments).Returns(inputAssemblies.ToArray());
-            commandLine.Setup(cmd => cmd.Option("keyfile")).Returns("filename");
-            Parse();
-            options.Validate();
+            try
+            {
+                var inputAssemblies = new List<string> { "A", "B", "C" };
+                commandLine.Setup(cmd => cmd.Option("out")).Returns("filename");
+                commandLine.Setup(cmd => cmd.OtherAguments).Returns(inputAssemblies.ToArray());
+                commandLine.Setup(cmd => cmd.Option("keyfile")).Returns("filename");
+                Parse();
+                options.Validate();
+                Assert.Fail(); // should throw ArgumentException("KeyFile does not exist")
+            }
+            catch (ArgumentException ex)
+            {
+                if (!ex.Message.StartsWith("KeyFile does not exist"))
+                {
+                    Assert.Fail(); // should throw ArgumentException("KeyFile does not exist")
+                }
+            }
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException), ExpectedMessage = "KeyFile does not exist", MatchType = MessageMatch.Contains)]
+        ////[ExpectedException(typeof(ArgumentException), ExpectedMessage = "KeyFile does not exist", MatchType = MessageMatch.Contains)]
         public void WithNoKeyFileEvenWithKeyContainer__ParseProperties__ThrowException()
         {
-            var inputAssemblies = new List<string> { "A", "B", "C" };
-            commandLine.Setup(cmd => cmd.Option("out")).Returns("filename");
-            commandLine.Setup(cmd => cmd.OtherAguments).Returns(inputAssemblies.ToArray());
-            commandLine.Setup(cmd => cmd.Option("keyfile")).Returns("filename");
-            commandLine.Setup(cmd => cmd.Option("keycontainer")).Returns("containername");
-            Parse();
-            options.Validate();
+            try
+            {
+                var inputAssemblies = new List<string> { "A", "B", "C" };
+                commandLine.Setup(cmd => cmd.Option("out")).Returns("filename");
+                commandLine.Setup(cmd => cmd.OtherAguments).Returns(inputAssemblies.ToArray());
+                commandLine.Setup(cmd => cmd.Option("keyfile")).Returns("filename");
+                commandLine.Setup(cmd => cmd.Option("keycontainer")).Returns("containername");
+                Parse();
+                options.Validate();
+                Assert.Fail(); // should throw ArgumentException("KeyFile does not exist")
+            }
+            catch (ArgumentException ex)
+            {
+                if (!ex.Message.StartsWith("KeyFile does not exist"))
+                {
+                    Assert.Fail(); // should throw ArgumentException("KeyFile does not exist")
+                }
+            }
         }
 
         [Test]

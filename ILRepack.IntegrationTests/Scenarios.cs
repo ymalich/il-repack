@@ -77,7 +77,7 @@ namespace ILRepack.IntegrationTests
 
         private string GetScenarioExecutable(string scenarioName)
         {
-            string scenariosDirectory = Path.Combine(TestContext.CurrentContext.TestDirectory, @"..\..\Scenarios\");
+            string scenariosDirectory = Path.Combine(TestContext.CurrentContext.TestDirectory, @"..\..\..\Scenarios\");
             string scenarioDirectory = Path.Combine(scenariosDirectory, scenarioName);
             string scenarioExecutableFileName = scenarioName + ".exe";
 

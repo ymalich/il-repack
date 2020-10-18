@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2036
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30517.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4547EE79-6D49-4318-B473-B5BBF73B434C}"
 	ProjectSection(SolutionItems) = preProject
@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILRepack", "ILRepack\ILRepack.csproj", "{4A253A60-D998-4CA2-B9D5-46567A2FBF80}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILRepack", "ILRepack\ILRepack.csproj", "{4A253A60-D998-4CA2-B9D5-46567A2FBF80}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mono.Cecil", "cecil\Mono.Cecil.csproj", "{D68133BD-1E63-496E-9EDE-4FBDBF77B486}"
 EndProject
@@ -18,7 +18,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mono.Cecil.Pdb", "cecil\sym
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mono.Cecil.Mdb", "cecil\symbols\mdb\Mono.Cecil.Mdb.csproj", "{8559DD7F-A16F-46D0-A05A-9139FAEBA8FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILRepack.Tests", "ILRepack.Tests\ILRepack.Tests.csproj", "{468ED600-2E3B-471C-BB8A-B0D968FD7FA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILRepack.Tests", "ILRepack.Tests\ILRepack.Tests.csproj", "{468ED600-2E3B-471C-BB8A-B0D968FD7FA2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration Tests Scenarios", "Integration Tests Scenarios", "{04819B25-ABEA-46F7-90D5-149C8304F67F}"
 EndProject
@@ -29,19 +29,25 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary", "ILRepack.In
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryClassUsageInXAML", "ILRepack.IntegrationTests\Scenarios\LibraryClassUsageInXAML\LibraryClassUsageInXAML.csproj", "{CE27F333-D875-43D0-9D3C-4F8F102FC92D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILRepack.IntegrationTests", "ILRepack.IntegrationTests\ILRepack.IntegrationTests.csproj", "{B0E4D418-5F5D-4F19-B1DB-0659F17F9251}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILRepack.IntegrationTests", "ILRepack.IntegrationTests\ILRepack.IntegrationTests.csproj", "{B0E4D418-5F5D-4F19-B1DB-0659F17F9251}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryUserControlUsageInXAML", "ILRepack.IntegrationTests\Scenarios\LibraryUserControlUsageInXAML\LibraryUserControlUsageInXAML.csproj", "{2D4C999E-8175-4505-AC33-7A641ED32F2B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnotherClassLibrary", "ILRepack.IntegrationTests\Scenarios\AnotherClassLibrary\AnotherClassLibrary.csproj", "{F92CF620-F1A5-4A3E-A774-4199F54FEF2E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NestedLibraryUsageInXAML", "ILRepack.IntegrationTests\Scenarios\NestedLibraryUsageInXAML\NestedLibraryUsageInXAML.csproj", "{B8282E50-564D-4E5B-B96F-4A8E53067551}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4A253A60-D998-4CA2-B9D5-46567A2FBF80} = {4A253A60-D998-4CA2-B9D5-46567A2FBF80}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFSampleApplication", "ILRepack.IntegrationTests\Scenarios\WPFSampleApplication\WPFSampleApplication.csproj", "{A183949D-1057-4585-B76D-F86CA28C69D0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFThemingAndLibraryStyles", "ILRepack.IntegrationTests\Scenarios\WPFThemingAndLibraryStyles\WPFThemingAndLibraryStyles.csproj", "{6A827942-BEEF-4E49-A3A4-306E21428E85}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNet462Application", "ILRepack.IntegrationTests\Scenarios\DotNet462Application\DotNet462Application.csproj", "{EECC6459-78C6-4A08-9039-DE37E75866E6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4A253A60-D998-4CA2-B9D5-46567A2FBF80} = {4A253A60-D998-4CA2-B9D5-46567A2FBF80}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNet462NetStandard2", "ILRepack.IntegrationTests\Scenarios\DotNet462NetStandard2\DotNet462NetStandard2.csproj", "{90F1C943-3C23-4091-B07F-0B34748AE056}"
 	ProjectSection(ProjectDependencies) = postProject

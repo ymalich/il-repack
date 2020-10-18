@@ -89,12 +89,15 @@ namespace ILRepack.IntegrationTests.NuGet
         [Platform(Include = "win")]
         public void VerifiesMergedSignedAssemblyHasNoUnsignedFriend()
         {
+            var assemblyPDir = Path.GetDirectoryName(GetType().Assembly.Location);
+            var keyFile = Path.GetFullPath(Path.Combine(assemblyPDir, "../../../../ILRepack/ILRepack.snk"));
+
             var platform = Platform.From(
                 Package.From("reactiveui-core", "6.5.0")
                     .WithArtifact(@"lib\net45\ReactiveUI.dll"),
                 Package.From("Splat", "1.6.2")
                     .WithArtifact(@"lib\net45\Splat.dll"))
-                .WithExtraArgs("/keyfile:../../../ILRepack/ILRepack.snk");
+                .WithExtraArgs($"/keyfile:{keyFile}");
             platform.Packages.ToObservable()
                 .SelectMany(NuGetHelpers.GetNupkgAssembliesAsync)
                 .Do(lib => TestHelpers.SaveAs(lib.Item2(), tempDirectory, lib.Item1))
@@ -111,6 +114,10 @@ namespace ILRepack.IntegrationTests.NuGet
         [Platform(Include = "win")]
         public void VerifiesMergedPdbUnchangedSourceIndexationForTfsIndexation()
         {
+            // test doesn't work correctly after moving to net472 due-to missing dependency 
+            /// ----> Mono.Cecil.AssemblyResolutionException : Failed to resolve assembly: 'FSharp.Core, Version=4.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' 
+            // please re-create the test or exclude it
+
             const string LibName = "TfsEngine.dll";
             const string PdbName = "TfsEngine.pdb";
 
@@ -142,7 +149,9 @@ namespace ILRepack.IntegrationTests.NuGet
         {
             var platform = Platform.From(
                 Package.From("SourceLink.Core", "1.1.0"),
-                Package.From("sourcelink.symbolstore", "1.1.0"));
+                Package.From("sourcelink.symbolstore", "1.1.0"),
+                Package.From("fsharp.core", "4.0.0.1")
+                );
             platform.Packages.ToObservable()
                 .SelectMany(NuGetHelpers.GetNupkgContentAsync)
                 .Do(lib => TestHelpers.SaveAs(lib.Item2(), tempDirectory, lib.Item1))
@@ -171,7 +180,7 @@ namespace ILRepack.IntegrationTests.NuGet
                                   RedirectStandardOutput = true,
                                   FileName = Path.Combine(
                                           TestContext.CurrentContext.TestDirectory,
-                                          @"..\..\..\packages\SourceLink.1.1.0\tools\SourceLink.exe"),
+                                          @"..\..\..\..\packages\SourceLink.1.1.0\tools\SourceLink.exe"),
                                   Arguments = "srctoolx --pdb " + pdbName
                               };
             using (var sourceLinkProcess = Process.Start(processInfo))

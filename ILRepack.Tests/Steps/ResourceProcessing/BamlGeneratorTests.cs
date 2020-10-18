@@ -50,7 +50,7 @@ namespace ILRepack.Tests.Steps.ResourceProcessing
                                        "This will prevent proper WPF application merging."));
         }
 
-        public IEnumerable GetExistingGenericXamlTestCases()
+        public static IEnumerable GetExistingGenericXamlTestCases()
         {
             string[] testCases =
             {
@@ -64,7 +64,7 @@ namespace ILRepack.Tests.Steps.ResourceProcessing
         }
 
         [Test]
-        [TestCaseSource("GetExistingGenericXamlTestCases")]
+        [TestCaseSource(nameof(GetExistingGenericXamlTestCases))]
         public void AddMergedDictionaries_GivenExistingGenericXaml_CreatesExpectedXaml(
             string startingGenericXaml, string endResultGenericXaml)
         {
@@ -112,7 +112,8 @@ namespace ILRepack.Tests.Steps.ResourceProcessing
             {
                 AssemblyNameReference.Parse("WindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"),
                 AssemblyNameReference.Parse("PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"),
-                AssemblyNameReference.Parse("PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35")
+                AssemblyNameReference.Parse("PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"),
+                AssemblyNameReference.Parse("System.Windows.Controls.Ribbon, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"),
             };
 
             return new BamlGenerator(logger ?? Mock.Of<ILogger>(), references, mainAssembly);
